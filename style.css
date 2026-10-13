@@ -1,5 +1,5 @@
 /* ==========================================================
-   Counter-Strike 1.6 — Web Edition (Animated + Jump)
+   Counter-Strike 1.6 — Web Edition (Animated + Jump + Mobile)
    style.css
    ========================================================== */
 
@@ -7,6 +7,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
@@ -17,6 +18,8 @@ html, body {
   font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
   user-select: none;
   -webkit-user-select: none;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 #game-container {
@@ -24,6 +27,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  touch-action: none;
 }
 
 #game-canvas {
@@ -31,6 +35,7 @@ html, body {
   width: 100%;
   height: 100%;
   cursor: crosshair;
+  touch-action: none;
 }
 
 /* ==================== Виньетка ==================== */
@@ -50,6 +55,8 @@ html, body {
 .hidden {
   display: none !important;
 }
+
+.mobile-only { display: none; }
 
 /* ==================== Прицел ==================== */
 #crosshair {
@@ -336,6 +343,7 @@ html, body {
   text-align: center;
   padding: 20px;
   animation: overlayFadeIn 0.35s ease-out;
+  pointer-events: auto;
 }
 
 @keyframes overlayFadeIn {
@@ -422,6 +430,7 @@ html, body {
   box-shadow: 0 0 22px rgba(70, 255, 70, 0.4),
               inset 0 -3px 0 rgba(0, 0, 0, 0.25);
   transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+  touch-action: manipulation;
 }
 
 .btn:hover {
@@ -490,6 +499,308 @@ html, body {
   color: #ffd966;
 }
 
+/* ==========================================================
+   МОБИЛЬНОЕ УПРАВЛЕНИЕ
+   ========================================================== */
+
+#mobile-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  display: none;
+}
+
+body.is-mobile #mobile-controls {
+  display: block;
+}
+
+body.is-mobile #mobile-controls.hidden {
+  display: none;
+}
+
+/* --- Зона обзора --- */
+#look-area {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 55%;
+  height: 100%;
+  z-index: 100;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+/* --- Джойстик --- */
+#joystick-base {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  width: 124px;
+  height: 124px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center,
+    rgba(20, 45, 20, 0.28) 0%,
+    rgba(15, 30, 15, 0.42) 100%);
+  border: 2px solid rgba(120, 220, 120, 0.4);
+  backdrop-filter: blur(3px);
+  box-shadow:
+    0 0 22px rgba(70, 255, 70, 0.15),
+    inset 0 0 22px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+  touch-action: none;
+  z-index: 110;
+}
+
+#joystick-base::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: rgba(120, 220, 120, 0.25);
+  box-shadow: 0 0 6px rgba(70, 255, 70, 0.3);
+}
+
+#joystick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  margin-left: -27px;
+  margin-top: -27px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%,
+    #b6ffb6 0%,
+    #35c235 55%,
+    #1a6b1a 100%);
+  border: 2px solid rgba(200, 255, 200, 0.65);
+  box-shadow:
+    0 0 14px rgba(70, 255, 70, 0.5),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* --- Кнопки --- */
+.mobile-btn {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%,
+    rgba(120, 200, 120, 0.7),
+    rgba(40, 90, 40, 0.75) 65%,
+    rgba(18, 45, 18, 0.85));
+  border: 2px solid rgba(160, 240, 160, 0.55);
+  color: #eaffea;
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 1px;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.95);
+  box-shadow:
+    0 0 14px rgba(70, 255, 70, 0.22),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+  touch-action: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.06s ease-out, box-shadow 0.06s ease-out, filter 0.06s ease-out;
+  z-index: 120;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.mobile-btn:active,
+.mobile-btn.pressed {
+  transform: scale(0.92);
+  filter: brightness(1.25);
+  box-shadow:
+    0 0 24px rgba(70, 255, 70, 0.55),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.45);
+}
+
+#mobile-fire {
+  right: 22px;
+  bottom: 22px;
+  width: 96px;
+  height: 96px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  background: radial-gradient(circle at 35% 30%,
+    rgba(255, 140, 100, 0.9),
+    rgba(180, 50, 30, 0.85) 60%,
+    rgba(80, 15, 10, 0.92));
+  border-color: rgba(255, 180, 140, 0.7);
+  box-shadow:
+    0 0 20px rgba(255, 100, 60, 0.4),
+    inset 0 -5px 10px rgba(0, 0, 0, 0.4);
+  color: #fff6ee;
+}
+
+#mobile-fire:active,
+#mobile-fire.pressed {
+  box-shadow:
+    0 0 30px rgba(255, 100, 60, 0.85),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#mobile-jump {
+  right: 128px;
+  bottom: 38px;
+  width: 70px;
+  height: 70px;
+  font-size: 20px;
+}
+
+#mobile-reload {
+  right: 26px;
+  bottom: 128px;
+  width: 62px;
+  height: 62px;
+  font-size: 22px;
+}
+
+/* Кнопка паузы */
+.mobile-btn-pause {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: rgba(20, 40, 20, 0.55);
+  border: 1px solid rgba(120, 220, 120, 0.4);
+  color: #d8ffd8;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0;
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  pointer-events: auto;
+  touch-action: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 130;
+  backdrop-filter: blur(3px);
+  transition: background 0.08s ease-out, transform 0.06s ease-out;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.mobile-btn-pause:active {
+  background: rgba(40, 80, 40, 0.8);
+  transform: scale(0.94);
+}
+
+/* ==========================================================
+   Мобильные адаптации HUD
+   ========================================================== */
+body.is-mobile #hud-bottom-left {
+  left: 14px;
+  bottom: 158px;
+  padding: 8px 14px;
+  gap: 8px;
+}
+
+body.is-mobile .health-icon { font-size: 22px; }
+body.is-mobile #health-value { font-size: 22px; }
+body.is-mobile .health-bar { width: 90px; }
+
+body.is-mobile #hud-bottom-right {
+  right: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20px;
+  padding: 8px 20px;
+  font-size: 24px;
+}
+
+body.is-mobile #hud-bottom-right.shoot {
+  transform: translateX(-50%) translateY(-3px) scale(1.04);
+}
+
+body.is-mobile #hud-top {
+  top: 10px;
+  gap: 5px;
+}
+
+body.is-mobile .hud-box {
+  min-width: 62px;
+  padding: 5px 8px;
+}
+
+body.is-mobile .hud-label { font-size: 9px; letter-spacing: 1px; }
+body.is-mobile .hud-value { font-size: 15px; }
+
+body.is-mobile #banner {
+  font-size: 26px;
+  letter-spacing: 3px;
+}
+
+body.is-mobile #reload-hint {
+  font-size: 14px;
+  bottom: 36%;
+}
+
+body.is-mobile .subtitle { font-size: 12px; letter-spacing: 5px; }
+body.is-mobile .overlay h1 { font-size: 34px; }
+body.is-mobile .overlay h2 { font-size: 26px; }
+body.is-mobile .controls { padding: 12px 22px; font-size: 14px; }
+body.is-mobile .btn { font-size: 17px; padding: 12px 40px; }
+body.is-mobile .stats { padding: 14px 30px; font-size: 15px; }
+body.is-mobile .record-line { font-size: 13px; }
+
+body.is-mobile .desktop-only { display: none; }
+body.is-mobile .mobile-only  { display: block; }
+
+/* Ландшафтная ориентация: слегка уменьшаем элементы */
+@media (orientation: landscape) and (max-height: 500px) {
+  #joystick-base {
+    width: 108px;
+    height: 108px;
+    left: 18px;
+    bottom: 18px;
+  }
+  #joystick-knob {
+    width: 48px;
+    height: 48px;
+    margin-left: -24px;
+    margin-top: -24px;
+  }
+  #mobile-fire {
+    width: 84px;
+    height: 84px;
+    right: 18px;
+    bottom: 18px;
+  }
+  #mobile-jump {
+    width: 62px;
+    height: 62px;
+    right: 114px;
+    bottom: 30px;
+  }
+  #mobile-reload {
+    width: 56px;
+    height: 56px;
+    right: 22px;
+    bottom: 114px;
+  }
+  body.is-mobile #hud-bottom-left {
+    bottom: 140px;
+  }
+  body.is-mobile .health-bar { width: 70px; }
+}
+
+/* Медиа для узких экранов в портрете */
 @media (max-width: 720px) {
   .overlay h1 { font-size: 32px; }
   .overlay h2 { font-size: 26px; }
@@ -497,7 +808,4 @@ html, body {
   #hud-top { gap: 5px; }
   .hud-box { min-width: 62px; padding: 4px 8px; }
   .hud-value { font-size: 15px; }
-  #hud-bottom-right { font-size: 22px; padding: 8px 14px; }
-  #hud-bottom-left { padding: 8px 12px; left: 12px; bottom: 12px; }
-  .health-bar { width: 80px; }
 }

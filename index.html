@@ -2,7 +2,9 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
 <title>Counter-Strike 1.6 — Web Edition</title>
 <link rel="stylesheet" href="style.css" />
 </head>
@@ -65,18 +67,41 @@
     <div id="damage-flash"></div>
   </div>
 
+  <!-- ================= МОБИЛЬНОЕ УПРАВЛЕНИЕ ================= -->
+  <div id="mobile-controls" class="hidden">
+
+    <!-- Зона обзора (правая половина) -->
+    <div id="look-area"></div>
+
+    <!-- Виртуальный джойстик -->
+    <div id="joystick-base">
+      <div id="joystick-knob"></div>
+    </div>
+
+    <!-- Кнопки действий -->
+    <button id="mobile-fire"   class="mobile-btn" aria-label="Стрельба">FIRE</button>
+    <button id="mobile-jump"   class="mobile-btn" aria-label="Прыжок">▲</button>
+    <button id="mobile-reload" class="mobile-btn" aria-label="Перезарядка">↻</button>
+    <button id="mobile-pause"  class="mobile-btn-pause" aria-label="Пауза">❚❚</button>
+  </div>
+
   <!-- ================= МЕНЮ ================= -->
   <div id="menu" class="overlay">
     <h1>COUNTER-STRIKE <span>1.6</span></h1>
     <p class="subtitle">WEB EDITION · ANIMATED</p>
 
     <div class="controls">
-      <p><b>W A S D</b> — движение</p>
-      <p><b>МЫШЬ</b> — прицеливание</p>
-      <p><b>ЛКМ</b> — стрельба</p>
-      <p><b>ПРОБЕЛ</b> — прыжок</p>
-      <p><b>R</b> — перезарядка</p>
-      <p><b>ESC</b> — пауза</p>
+      <p class="desktop-only"><b>W A S D</b> — движение</p>
+      <p class="desktop-only"><b>МЫШЬ</b> — прицеливание</p>
+      <p class="desktop-only"><b>ЛКМ</b> — стрельба</p>
+      <p class="desktop-only"><b>ПРОБЕЛ</b> — прыжок</p>
+      <p class="desktop-only"><b>R</b> — перезарядка</p>
+      <p class="desktop-only"><b>ESC</b> — пауза</p>
+
+      <p class="mobile-only">Джойстик слева — движение</p>
+      <p class="mobile-only">Свайп справа — обзор</p>
+      <p class="mobile-only">FIRE — стрельба</p>
+      <p class="mobile-only">▲ — прыжок, ↻ — перезарядка</p>
     </div>
 
     <button id="start-btn" class="btn">ИГРАТЬ</button>
@@ -89,7 +114,7 @@
     <button id="resume-btn" class="btn">ПРОДОЛЖИТЬ</button>
     <button id="menu-btn" class="btn btn-secondary">В МЕНЮ</button>
   </div>
-  
+
   <!-- ================= КОНЕЦ ИГРЫ ================= -->
   <div id="gameover" class="overlay hidden">
     <h2 class="dead">ВЫ ПОГИБЛИ</h2>
