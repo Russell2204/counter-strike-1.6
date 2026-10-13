@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Counter-Strike 1.6 — Web Edition</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="game-container">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Виньетка / эффект объектива -->
+  <div id="vignette"></div>
+
+  <!-- ================= HUD ================= -->
+  <div id="hud" class="hidden">
+
+    <div id="crosshair">
+      <span class="ch-line ch-top"></span>
+      <span class="ch-line ch-bottom"></span>
+      <span class="ch-line ch-left"></span>
+      <span class="ch-line ch-right"></span>
+      <span class="ch-dot"></span>
+    </div>
+
+    <div id="hitmarker">✕</div>
+
+    <div id="hud-top">
+      <div class="hud-box">
+        <span class="hud-label">РАУНД</span>
+        <span class="hud-value" id="round-value">1</span>
+      </div>
+      <div class="hud-box">
+        <span class="hud-label">ВРАГИ</span>
+        <span class="hud-value" id="enemies-value">0</span>
+      </div>
+      <div class="hud-box">
+        <span class="hud-label">СЧЁТ</span>
+        <span class="hud-value" id="score-value">0</span>
+      </div>
+      <div class="hud-box">
+        <span class="hud-label">РЕКОРД</span>
+        <span class="hud-value" id="highscore-value">0</span>
+      </div>
+    </div>
+
+    <div id="hud-bottom-left">
+      <div class="health-icon">✚</div>
+      <div class="health-info">
+        <div id="health-value">100</div>
+        <div class="health-bar"><div id="health-bar-fill"></div></div>
+      </div>
+    </div>
+
+    <div id="hud-bottom-right">
+      <span id="ammo-value">30</span>
+      <span id="ammo-sep">/</span>
+      <span id="reserve-value">90</span>
+    </div>
+
+    <div id="reload-hint" class="hidden">НАЖМИТЕ R ДЛЯ ПЕРЕЗАРЯДКИ</div>
+    <div id="banner" class="hidden"></div>
+    <div id="damage-flash"></div>
+  </div>
+
+  <!-- ================= МЕНЮ ================= -->
+  <div id="menu" class="overlay">
+    <h1>COUNTER-STRIKE <span>1.6</span></h1>
+    <p class="subtitle">WEB EDITION · ANIMATED</p>
+
+    <div class="controls">
+      <p><b>W A S D</b> — движение</p>
+      <p><b>МЫШЬ</b> — прицеливание</p>
+      <p><b>ЛКМ</b> — стрельба</p>
+      <p><b>ПРОБЕЛ</b> — прыжок</p>
+      <p><b>R</b> — перезарядка</p>
+      <p><b>ESC</b> — пауза</p>
+    </div>
+
+    <button id="start-btn" class="btn">ИГРАТЬ</button>
+    <p class="record-line">Рекорд: <span id="menu-highscore">0</span></p>
+  </div>
+
+  <!-- ================= ПАУЗА ================= -->
+  <div id="pause" class="overlay hidden">
+    <h2>ПАУЗА</h2>
+    <button id="resume-btn" class="btn">ПРОДОЛЖИТЬ</button>
+    <button id="menu-btn" class="btn btn-secondary">В МЕНЮ</button>
+  </div>
+  
+  <!-- ================= КОНЕЦ ИГРЫ ================= -->
+  <div id="gameover" class="overlay hidden">
+    <h2 class="dead">ВЫ ПОГИБЛИ</h2>
+    <div class="stats">
+      <p>Счёт: <span id="final-score">0</span></p>
+      <p>Убийств: <span id="final-kills">0</span></p>
+      <p>Хедшотов: <span id="final-headshots">0</span></p>
+      <p>Достигнутый раунд: <span id="final-round">1</span></p>
+      <p class="record">Рекорд: <span id="final-highscore">0</span></p>
+    </div>
+    <button id="restart-btn" class="btn">ЗАНОВО</button>
+    <button id="to-menu-btn" class="btn btn-secondary">В МЕНЮ</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
